@@ -23,4 +23,12 @@ def add_to_json(site, code):
     f.close()
 
 def find_password(site_name):
-    pass
+    path = "database/vault_data.json"
+    if os.path.exists(path) == True:
+        f = open(path, "r")
+        data_list = json.load(f)
+        f.close()
+        for item in data_list:
+            if item["website"] == site_name:
+                return item["password"]
+    return "Not Found"
