@@ -2,9 +2,11 @@
 
 import json
 import os
+import locker
 
 def add_to_json(site, code):
-    new_entry = {"website": site, "password": code}
+    scrambled = locker.make_secret(code)
+    new_entry = {"website": site, "password": scrambled}
     path = "database/vault_data.json"
 
     if os.path.exists(path) == False:
