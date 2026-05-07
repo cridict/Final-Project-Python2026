@@ -31,6 +31,20 @@ def find_password(site_name):
         data_list = json.load(f)
         f.close()
         for item in data_list:
-            if item["website"] == site_name:
-                return item["password"]
+            site_in_file = item["website"]
+            site_typed = site_name
+            if site_in_file == site_typed:
+                real_pw = locker.unscramble(item["password"])
+                return real_pw
     return "Not Found"
+
+def get_all_sites():
+    path = "database/vault_data.json"
+    sites = []
+    if os.path.exists(path) == True:
+        f = open(path, "r")
+        data_list = json.load(f)
+        f.close()
+        for item in data_list:
+            sites.append(item["website"])
+    return sites
