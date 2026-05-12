@@ -1,4 +1,5 @@
 #JSON / File Read and Write
+
 import json
 import os
 import locker
@@ -26,6 +27,23 @@ def add_to_json(site, code, username):
     json.dump(data_list, f, indent=4)
     f.close()
     return "saved"
+
+def delete_one_entry(site, username):
+    path = "database/vault_data.json"
+    if os.path.exists(path) == True:
+        f = open(path, "r")
+        data_list = json.load(f)
+        f.close()
+        new_list = []
+        deleted = False
+        for item in data_list:
+            if item["website"] == site and item.get("username", "") == username and deleted == False:
+                deleted = True
+            else:
+                new_list.append(item)
+        f = open(path, "w")
+        json.dump(new_list, f, indent=4)
+        f.close()
 
 def find_password(site_name):
     path = "database/vault_data.json"
