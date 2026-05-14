@@ -1,12 +1,9 @@
 #JSON / File Read and Write
-
 import json
 import os
 import locker
 
 def add_to_json(site, code, username):
-    scrambled = locker.make_secret(code)
-    new_entry = {"website": site, "username": username, "password": scrambled}
     path = "database/vault_data.json"
 
     if os.path.exists("database") == False:
@@ -21,6 +18,20 @@ def add_to_json(site, code, username):
     data_list = json.load(f)
     f.close()
 
+    for item in data_list:
+        existing_site = item["website"]
+        existing_user = item.get("username", "")
+        existing_pw = locker.unscramble(item["password"])
+
+        same_pw = existing_pw == code
+        same_site = existing_site == site
+        same_user = existing_user == username and username != ""
+
+        if same_pw and (same_site or same_user):
+            return "duplicate"
+
+    scrambled = locker.make_secret(code)
+    new_entry = {"website": site, "username": username, "password": scrambled}
     data_list.append(new_entry)
 
     f = open(path, "w")
