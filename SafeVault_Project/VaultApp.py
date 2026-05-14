@@ -1,4 +1,3 @@
-
 #API / Webscraping and GUI
 import tkinter as tk
 from tkinter import messagebox
@@ -179,8 +178,6 @@ def add_saved_row(site, username, pw):
 app.title("Safe Vault App")
 app.geometry("480x780")
 app.config(bg="#1a1a2e")
-
- 
 
 setup_master()
 
