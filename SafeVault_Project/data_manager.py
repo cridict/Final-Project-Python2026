@@ -56,6 +56,17 @@ def delete_one_entry(site, username):
         json.dump(new_list, f, indent=4)
         f.close()
 
+def count_entries():
+    path = "database/vault_data.json"
+    total = 0
+    if os.path.exists(path) == True:
+        f = open(path, "r")
+        data_list = json.load(f)
+        f.close()
+        for item in data_list:
+            total = total + 1
+    return total
+
 def find_password(site_name):
     path = "database/vault_data.json"
     matches = []
