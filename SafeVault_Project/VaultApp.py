@@ -46,12 +46,12 @@ def check_hacker_list():
             else:
                 messagebox.showinfo("Result", "No breaches found for this password!")
         except:
-            messagebox.showinfo("Error", "Could not connect to the internet")
+            messagebox.showinfo("Error", "Could not connect to the internet.")
 
 def check_strength():
     p = pass_box.get()
     if len(p) < 3 and len(p) > 0:
-        messagebox.showinfo("Error", "Sorry you need more characters for a secure password")
+        messagebox.showinfo("Error", "Sorry you need more characters for a secure password.")
         return
     length = len(p)
     special = "?!<>#$%@&*"
@@ -100,13 +100,14 @@ def run_save():
     if site == "" or pw == "":
         messagebox.showinfo("Error", "Please fill out website and password")
     elif len(pw) < 3:
-        messagebox.showinfo("Error", "Sorry you need more characters for a secure password")
+        messagebox.showinfo("Error", "Sorry you need more characters for a secure password.")
     else:
         result = data_manager.add_to_json(site, pw, username)
         if result == "duplicate":
-            messagebox.showinfo("Error", "You cant save the same password for the same website/user twice")
+            messagebox.showinfo("Error", "You cant save the same password for the same website/user twice.")
         else:
             add_saved_row(site, username, pw)
+            count_label.config(text="Saved Passwords: " + str(data_manager.count_entries()))
             messagebox.showinfo("Saved", "Password added to vault")
 
 def clear_all():
@@ -120,6 +121,7 @@ def clear_all():
             f.close()
             for widget in saved_frame.winfo_children():
                 widget.destroy()
+            count_label.config(text="Saved Passwords: 0")
             messagebox.showinfo("Cleared", "All saved passwords have been deleted")
     else:
         messagebox.showinfo("Wrong", "Incorrect master password")
@@ -165,6 +167,7 @@ def add_saved_row(site, username, pw):
         if entered == master_password:
             data_manager.delete_one_entry(site, username)
             row.destroy()
+            count_label.config(text="Saved Passwords: " + str(data_manager.count_entries()))
         else:
             messagebox.showinfo("Wrong", "Incorrect master password")
 
@@ -250,7 +253,8 @@ tk.Button(btn_frame, text="🛡  API Security Scan", command=check_hacker_list, 
 tk.Button(frame2, text="✖  Clear All Saved Passwords", command=clear_all,
           bg="#5a1a1a", fg="white", relief="flat", padx=10, pady=8, width=40).pack(pady=6)
 
-tk.Label(app, text="Saved Passwords:", bg="#1a1a2e", fg="white").pack(anchor="w", padx=20, pady=5)
+count_label = tk.Label(app, text="Saved Passwords: " + str(data_manager.count_entries()), bg="#1a1a2e", fg="white")
+count_label.pack(anchor="w", padx=20, pady=5)
 
 saved_frame = tk.Frame(app, bg="#2a2a3e", padx=15, pady=10)
 saved_frame.pack(padx=15, fill="x")
