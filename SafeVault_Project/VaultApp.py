@@ -1,4 +1,4 @@
-# API / Webscraping and GUI
+#API / Webscraping and GUI
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -8,7 +8,6 @@ import data_manager
 import os
 
 master_password = ""
-
 
 def setup_master():
     global master_password
@@ -29,7 +28,6 @@ def setup_master():
         f = open(path, "r")
         master_password = f.read()
         f.close()
-
 
 def check_hacker_list():
     secret_code = pass_box.get()
@@ -53,7 +51,6 @@ def check_hacker_list():
         except:
             messagebox.showinfo("Error", "Could not connect to the internet.")
 
-
 def check_strength():
     p = pass_box.get()
     if len(p) < 3 and len(p) > 0:
@@ -69,7 +66,7 @@ def check_strength():
             special_count = special_count + 1
 
     score = length + (special_count * 2)
-    percent = int((score / 20) * 100)
+    percent = int((score / 12) * 100)
 
     if percent > 100:
         percent = 100
@@ -81,26 +78,25 @@ def check_strength():
         percent_label.config(text="0%", fg="gray")
         canvas.coords(bar_mask, 10, 4, 352, 19)
 
-    if score >= 1 and score <= 5:
+    if score >= 1 and score <= 3:
         strength_label.config(text="Status: Weak", fg="red", bg="#3a1a1a")
         percent_label.config(text=str(percent) + "%", fg="red")
         canvas.coords(bar_mask, bar_end, 4, 352, 19)
 
-    if score >= 6 and score <= 10:
+    if score >= 4 and score <= 6:
         strength_label.config(text="Status: Okay", fg="orange", bg="#3a2a1a")
         percent_label.config(text=str(percent) + "%", fg="orange")
         canvas.coords(bar_mask, bar_end, 4, 352, 19)
 
-    if score >= 11 and score <= 15:
+    if score >= 7 and score <= 8:
         strength_label.config(text="Status: Good", fg="yellow", bg="#2a2a1a")
         percent_label.config(text=str(percent) + "%", fg="yellow")
         canvas.coords(bar_mask, bar_end, 4, 352, 19)
 
-    if score >= 16:
+    if score >= 9:
         strength_label.config(text="Status: Solid", fg="#00cc44", bg="#1a3a1a")
         percent_label.config(text=str(percent) + "%", fg="#00cc44")
         canvas.coords(bar_mask, 352, 4, 352, 19)
-
 
 def run_save():
     site = site_box.get()
@@ -120,7 +116,6 @@ def run_save():
             count_label.config(text="Saved Passwords: " + str(data_manager.count_entries()))
             messagebox.showinfo("Saved", "Password added to vault")
 
-
 def clear_all():
     entered = simpledialog.askstring("Confirm", "Enter your master password to clear all passwords:", show="*")
 
@@ -139,7 +134,6 @@ def clear_all():
             messagebox.showinfo("Cleared", "All saved passwords have been deleted")
     else:
         messagebox.showinfo("Wrong", "Incorrect master password")
-
 
 def add_saved_row(site, username, pw):
     row = tk.Frame(saved_frame, bg="#2a2a3e", pady=3)
@@ -162,7 +156,6 @@ def add_saved_row(site, username, pw):
     show_btn = tk.Button(row, text="👁", bg="#2a3a5a", fg="white", relief="flat", padx=6, pady=2)
     show_btn.pack(side="left", padx=4)
 
-    # Copy button starts as None; it will only appear when unlocked
     copy_btn_ref = [None]
 
     def copy_pw():
@@ -181,7 +174,6 @@ def add_saved_row(site, username, pw):
                 pw_label.config(text=pw, fg="white", bg="#2a2a3e")
                 is_showing[0] = True
 
-                # Show the copy button only after successful unlock
                 copy_btn = tk.Button(row, text="📋", bg="#2a3a5a", fg="white", relief="flat", padx=6, pady=2,
                                      command=copy_pw)
                 copy_btn.pack(side="left", padx=2, before=del_btn)
@@ -192,7 +184,6 @@ def add_saved_row(site, username, pw):
             pw_label.config(text="••••••••", fg="#1a1a2e", bg="#1a1a2e")
             is_showing[0] = False
 
-            # Remove the copy button when re-locking
             if copy_btn_ref[0] is not None:
                 copy_btn_ref[0].destroy()
                 copy_btn_ref[0] = None
@@ -218,10 +209,9 @@ def load_existing():
         pw = entry["password"]
         add_saved_row(site, username, pw)
 
-
 app = tk.Tk()
 app.title("Safe Vault App")
-app.geometry("480x780")
+app.geometry("480x820")
 app.config(bg="#1a1a2e")
 
 setup_master()
@@ -245,6 +235,11 @@ tk.Label(frame1, text="Password:", bg="#2a2a3e", fg="white").pack(anchor="w")
 pass_box = tk.Entry(frame1, bg="#1a1a2e", fg="white", insertbackground="white", relief="flat", bd=6, show="•",
                     highlightthickness=1, highlightbackground="#3a5a8a", highlightcolor="#5a8abf")
 pass_box.pack(fill="x", pady=5)
+
+tk.Label(frame1, text="💡 Guidelines for a Good Password:", bg="#2a2a3e", fg="#00cc44", pady=5).pack(anchor="w")
+tk.Label(frame1, text="• Make it at least 8 to 9 characters long", bg="#2a2a3e", fg="gray").pack(anchor="w", padx=10)
+tk.Label(frame1, text="• Mix in special symbols (?!<>#$%@&*)", bg="#2a2a3e", fg="gray").pack(anchor="w", padx=10)
+tk.Label(frame1, text="• Avoid names, dates, or dictionary words", bg="#2a2a3e", fg="gray").pack(anchor="w", padx=10)
 
 frame2 = tk.Frame(app, bg="#2a2a3e", padx=20, pady=15)
 frame2.pack(pady=5, padx=15, fill="x")
@@ -277,16 +272,11 @@ btn_frame.pack(fill="x", pady=8)
 
 btn_style = {"bg": "#2a3a5a", "fg": "white", "relief": "flat", "padx": 8, "pady": 10, "width": 20}
 
-tk.Button(btn_frame, text="↺  Re-check Strength", command=check_strength, **btn_style).grid(row=0, column=0, padx=4,
-                                                                                            pady=4)
+tk.Button(btn_frame, text="↺  Re-check Strength", command=check_strength, **btn_style).grid(row=0, column=0, padx=4, pady=4)
 tk.Button(btn_frame, text="💾  Save Password", command=run_save, **btn_style).grid(row=0, column=1, padx=4, pady=4)
-tk.Button(btn_frame, text="🛡  API Security Scan", command=check_hacker_list, **btn_style).grid(row=1, column=0,
-                                                                                               columnspan=2,
-                                                                                               sticky="ew", padx=4,
-                                                                                               pady=4)
+tk.Button(btn_frame, text="🛡  API Security Scan", command=check_hacker_list, **btn_style).grid(row=1, column=0, columnspan=2, sticky="ew", padx=4, pady=4)
 
-tk.Button(frame2, text="✖  Clear All Saved Passwords", command=clear_all, bg="#5a1a1a", fg="white", relief="flat",
-          padx=10, pady=8, width=40).pack(pady=6)
+tk.Button(frame2, text="✖  Clear All Saved Passwords", command=clear_all, bg="#5a1a1a", fg="white", relief="flat", padx=10, pady=8, width=40).pack(pady=6)
 
 count_label = tk.Label(app, text="Saved Passwords: " + str(data_manager.count_entries()), bg="#1a1a2e", fg="white")
 count_label.pack(anchor="w", padx=20, pady=5)
