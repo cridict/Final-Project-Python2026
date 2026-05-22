@@ -13,5 +13,5 @@ VaultApp is a desktop password manager my partner and I made for our final proje
 2. The app lets you save an entry without a username since usernames are optional. Just make sure you don't accidentally leave it blank if you wanted to save one.
 
 ### 3. Partner Responsibilities and Project Concepts
-1. **My part:** I handled data saving, file paths, and making sure our data manager script reads and writes the JSON arrays correctly. I also added the Base64 encryption to hide the passwords.
-2. **My partner's part:** They designed the GUI window using tkinter and set up the 8-to-9 character strength checker bar. They also handled the web API connection for the security scanner.
+1. **Joey's part:** I did data saving, file paths, and making sure our data manager script reads and writes the JSON arrays correctly. I also added the Base64 encryption to hide the passwords better.
+2. **Vincents part:** I designed the GUI window and set up the 8 to 9 character strength checker bar. They also handled the web API connection for the security scanner.
